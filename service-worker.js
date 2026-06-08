@@ -1,13 +1,12 @@
-const CACHE_NAME = "pensaqui-github-pages-pwa-v2";
-
+const CACHE_NAME = "pensaqui-pwa-v1";
 const ASSETS = [
-  "./",
-  "./index.html",
-  "./manifest.json",
-  "./icon-192.png",
-  "./icon-512.png",
-  "./maskable-icon-192.png",
-  "./maskable-icon-512.png"
+  "/",
+  "/index.html",
+  "/manifest.json",
+  "/icon-192.png",
+  "/icon-512.png",
+  "/maskable-icon-192.png",
+  "/maskable-icon-512.png"
 ];
 
 self.addEventListener("install", event => {
@@ -26,18 +25,16 @@ self.addEventListener("activate", event => {
 
 self.addEventListener("fetch", event => {
   if (event.request.method !== "GET") return;
-
   event.respondWith(
     caches.match(event.request).then(cached => {
       if (cached) return cached;
-
       return fetch(event.request)
         .then(response => {
           const copy = response.clone();
           caches.open(CACHE_NAME).then(cache => cache.put(event.request, copy));
           return response;
         })
-        .catch(() => caches.match("./index.html"));
+        .catch(() => caches.match("/index.html"));
     })
   );
 });
